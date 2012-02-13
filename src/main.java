@@ -1,36 +1,43 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.SQLException;
+
 
 public class main {
 
 	/**
 	 * @param args
-	 * @throws IOException 
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException 
 	 */
-	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
-        BufferedReader in = new BufferedReader (new FileReader("/Users/Chavda/Downloads/Snap/examples/graphgen/o1.txt"));
-        String strLine;
-        Connector c = new Connector();
-     
+		
+		System.out.println("Loading fetcher...");
 
-        while((strLine = in.readLine()) != null)
-        {
-                      
-        	if(strLine.charAt(0) == '#')
-        		continue;
+		long startTime = System.nanoTime();	
 
-            else{
-            	String [] tmp = strLine.split("\t");
-            	String sql = "INSERT INTO p2 values ("+tmp[0]+","+tmp[1]+");";
-            	c.query(sql);
-            }
-                      
-        }
+		Fetcher f = new Fetcher(10000);
+		f.loadFetcher(0, 64, 4096);
+		
+		
+		long stopTime = System.nanoTime();
+		long duration = stopTime - startTime;
+		
+		System.out.println("Loading duration: "+duration);
+		
+		System.out.println("Running BFS...");
+		
+		
+		startTime = System.nanoTime();		
+		
+		int end = f.BFS(9999);
+
+		stopTime = System.nanoTime();
+		duration = stopTime - startTime;
+		
+		System.out.println("BFS duration: "+duration);
+		
+		System.out.println(end);
+		
 	}
+
 }
